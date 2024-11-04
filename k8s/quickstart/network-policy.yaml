@@ -2,17 +2,17 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-spire-managed-identity
-  namespace: ns1  # Replace with your namespace
+  namespace: your-namespace  # Replace with your namespace
 spec:
-  podSelector:
-    matchLabels:
-      # This selects the pods to which you want to apply the policy
-      app: your-app-label  # Replace with your specific app label
   ingress:
   - from:
     - podSelector:
         matchExpressions:
-        - key: spiffe.io/spire-managed-identity
+        - key: app
           operator: In
           values:
-          - "true"
+          - echoserver-app-ns1
+          - sleep-app-ns1
+    - podSelector:
+        matchLabels:
+          spiffe.io/spire-managed-identity: "true"
